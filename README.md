@@ -8,13 +8,13 @@
 
 --> Clone the repository using the command below :
 ```bash
-git clone https://github.com/divanov11/Iga_Pro.git
+git clone https://github.com/divanov11/Iga_programming.git
 
 ```
 
 --> Move into the directory where we have the project files : 
 ```bash
-cd Iga_Pro
+cd Iga_programming
 
 ```
 
