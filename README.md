@@ -51,7 +51,7 @@ python manage.py runserver
 
 ### App Preview :
 
-<table width="100%"> 
+<!-- <table width="100%"> 
 <tr>
 <td width="50%">      
 &nbsp; 
@@ -69,6 +69,6 @@ python manage.py runserver
 <img src="https://user-images.githubusercontent.com/72341453/134747155-3ca5b55f-b064-4741-aeae-abe90bddf41e.PNG">  
 </td>
 </table>
-
+ -->
 
 Iga_Programming
