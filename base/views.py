@@ -18,27 +18,30 @@ from .forms import RoomForm, UserForm, MyUserCreationForm
 
 def loginPage(request):
     page = 'login'
+    login_errors = []
+    
     if request.user.is_authenticated:
         return redirect('home')
-
+    
     if request.method == 'POST':
         email = request.POST.get('email').lower()
         password = request.POST.get('password')
-
+        
         try:
             user = User.objects.get(email=email)
         except:
-            messages.error(request, 'User does not exist')
+            login_errors.append("incorrect user email.")
 
         user = authenticate(request, email=email, password=password)
 
         if user is not None:
             login(request, user)
+            messages.success(request, f"You are welcome back {request.user.username}!")
             return redirect('home')
         else:
-            messages.error(request, 'Username OR password does not exit')
+            login_errors.append("incorrect password or email please try again!")
 
-    context = {'page': page}
+    context = {'page': page, 'login_errors': login_errors}
     return render(request, 'base/login_register.html', context)
 
 
@@ -60,8 +63,6 @@ def registerPage(request):
             login(request, user)
             messages.success(request, f"Your welcome, {name}! The registration pass successfully!")
             return redirect('home')
-        else:
-            messages.error(request, 'An error occurred during registration')
 
     return render(request, 'base/login_register.html', {'form': form})
 
@@ -84,7 +85,7 @@ def home(request):
                'room_count': room_count, 'room_messages': room_messages}
     return render(request, 'base/home.html', context)
 
-
+@login_required(login_url='login')
 def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all()
@@ -103,7 +104,7 @@ def room(request, pk):
                'participants': participants}
     return render(request, 'base/room.html', context)
 
-
+@login_required(login_url='login')
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
     rooms = user.room_set.all()
@@ -201,7 +202,7 @@ def topicsPage(request):
     topics = Topic.objects.filter(name__icontains=q)
     return render(request, 'base/topics.html', {'topics': topics})
 
-
+@login_required(login_url='login')
 def activityPage(request):
     room_messages = Message.objects.all()
     return render(request, 'base/activity.html', {'room_messages': room_messages})
